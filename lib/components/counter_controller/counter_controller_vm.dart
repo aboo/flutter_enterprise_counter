@@ -5,9 +5,10 @@ import 'package:enterprise_counter/components/counter_controller/counter_control
 import 'package:enterprise_counter/services/services.dart';
 import 'package:injectable/injectable.dart';
 
+enum _modificationType { increase, decrease }
+
 @injectable
-class CounterControllerViewModel
-    extends BaseViewModel<CounterControllerBaseState> {
+class CounterControllerViewModel extends BaseViewModel<CounterControllerState> {
   final ICounterService _counterService;
   final IConnectivityService _connectivityService;
 
@@ -16,41 +17,47 @@ class CounterControllerViewModel
     required IConnectivityService connectivityService,
   })  : _counterService = counterService,
         _connectivityService = connectivityService,
-        super(CounterControllerInitialState()) {
+        super(const CounterControllerState.initial()) {
     listenTo(_connectivityService.stream, _handleConnectivityChange);
   }
 
   Future<void> positive() async {
-    emit(CounterControllerBusyState());
-    await _counterService.increment();
-    if (state is CounterControllerBusyState) {
-      emit(CounterControllerInitialState());
-    }
+    await _modify(_modificationType.increase);
   }
 
   Future<void> negative() async {
-    emit(CounterControllerBusyState());
-    await _counterService.decrement();
-    if (state is CounterControllerBusyState) {
-      emit(CounterControllerInitialState());
+    await _modify(_modificationType.decrease);
+  }
+
+  Future<void> _modify(_modificationType type) async {
+    emit(const CounterControllerState.busy());
+    type == _modificationType.decrease
+        ? await _counterService.decrement()
+        : await _counterService.increment();
+    if (state is Busy) {
+      emit(const CounterControllerState.initial());
     }
   }
 
-  void _handleConnectivityChange(ConnectivityServiceBaseState event) {
-    if (event is ConnectivityServiceState) {
+  void _handleConnectivityChange(ConnectivityServiceState event) {
+    if (event is Identified) {
       switch (event.type) {
         case ConnectivityType.unknown:
-          emit(CounterControllerUnavailableState('unknown connection state'));
+          _unavailable('unknown connection state');
           break;
         case ConnectivityType.disconnected:
-          emit(CounterControllerUnavailableState('we are disconnected'));
+          _unavailable('we are disconnected');
           break;
         default:
-          if (state is! CounterControllerBusyState) {
-            emit(CounterControllerInitialState());
+          if (state is! Busy) {
+            emit(const CounterControllerState.initial());
           }
           break;
       }
     }
+  }
+
+  void _unavailable(String reason) {
+    emit(CounterControllerState.unavailable(reason: reason));
   }
 }

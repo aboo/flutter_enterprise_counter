@@ -1,22 +1,12 @@
 import 'package:enterprise_counter/bases/bases.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-abstract class CounterControllerBaseState extends BaseState {}
+part 'counter_controller_m.freezed.dart';
 
-class CounterControllerInitialState extends CounterControllerBaseState {
-  @override
-  List<Object?> get props => [];
-}
-
-class CounterControllerBusyState extends CounterControllerBaseState {
-  @override
-  List<Object?> get props => [];
-}
-
-class CounterControllerUnavailableState extends CounterControllerBaseState {
-  final String reason;
-
-  CounterControllerUnavailableState(this.reason);
-
-  @override
-  List<Object?> get props => [reason];
+@freezed
+class CounterControllerState extends BaseState with _$CounterControllerState {
+  const factory CounterControllerState.initial() = Initial;
+  const factory CounterControllerState.busy() = Busy;
+  const factory CounterControllerState.unavailable({required String reason}) =
+      Unavaialble;
 }

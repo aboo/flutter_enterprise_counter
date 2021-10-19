@@ -1,14 +1,9 @@
 import 'package:enterprise_counter/bases/bases.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-abstract class CounterDisplayBaseState extends BaseState {}
+part 'counter_display_m.freezed.dart';
 
-class CounterDisplayState extends CounterDisplayBaseState {
-  final int counter;
-
-  CounterDisplayState({
-    required this.counter,
-  });
-
-  @override
-  List<Object?> get props => [counter];
+@freezed
+class CounterDisplayState extends BaseState with _$CounterDisplayState {
+  const factory CounterDisplayState.loaded({required int counter}) = Loaded;
 }

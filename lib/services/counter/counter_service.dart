@@ -6,8 +6,9 @@ import 'counter_service_m.dart';
 const _initialCount = 0;
 const _delay = Duration(seconds: 2);
 
-abstract class ICounterService extends BaseService<CounterServiceBaseState> {
-  ICounterService() : super(CounterServiceState(count: _initialCount));
+abstract class ICounterService extends BaseService<CounterServiceState> {
+  ICounterService()
+      : super(const CounterServiceState.data(count: _initialCount));
   Future<void> increment();
   Future<void> decrement();
 }
@@ -28,10 +29,9 @@ class CounterService extends ICounterService {
     emit(_getNewState(-1));
   }
 
-  CounterServiceBaseState _getNewState(int modification) {
-    if (state is CounterServiceState) {
-      var currentCount = (state as CounterServiceState).count;
-      return CounterServiceState(count: currentCount + modification);
+  CounterServiceState _getNewState(int modification) {
+    if (state is Data) {
+      return CounterServiceState.data(count: state.count + modification);
     }
 
     return state;

@@ -1,4 +1,7 @@
 import 'package:enterprise_counter/bases/bases.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'connectivity_service_m.freezed.dart';
 
 enum ConnectivityType {
   unknown,
@@ -6,15 +9,9 @@ enum ConnectivityType {
   disconnected,
 }
 
-abstract class ConnectivityServiceBaseState extends BaseState {}
-
-class ConnectivityServiceState extends ConnectivityServiceBaseState {
-  final ConnectivityType type;
-
-  ConnectivityServiceState({
-    required this.type,
-  });
-
-  @override
-  List<Object?> get props => [type];
+@freezed
+class ConnectivityServiceState extends BaseState
+    with _$ConnectivityServiceState {
+  const factory ConnectivityServiceState.identified(
+      {required ConnectivityType type}) = Identified;
 }

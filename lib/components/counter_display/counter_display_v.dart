@@ -12,10 +12,10 @@ class CounterDisplay extends StatelessWidget {
   final CounterDisplayViewModel _viewMode;
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CounterDisplayViewModel, CounterDisplayBaseState>(
+    return BlocBuilder<CounterDisplayViewModel, CounterDisplayState>(
       bloc: _viewMode,
       builder: (context, state) {
-        if (state is CounterDisplayState) {
+        if (state is Loaded) {
           return Text(state.counter.toString());
         }
         return Container();

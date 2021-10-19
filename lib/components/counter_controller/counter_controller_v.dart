@@ -15,12 +15,12 @@ class CounterController extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CounterControllerViewModel, CounterControllerBaseState>(
+    return BlocBuilder<CounterControllerViewModel, CounterControllerState>(
         bloc: _viewModel,
         builder: (context, state) {
-          if (state is CounterControllerBusyState) {
+          if (state is Busy) {
             return const Text('busy ...');
-          } else if (state is CounterControllerUnavailableState) {
+          } else if (state is Unavaialble) {
             return Text(state.reason);
           }
 

@@ -6,9 +6,10 @@ import 'package:injectable/injectable.dart';
 export 'connectivity_service_m.dart';
 
 abstract class IConnectivityService
-    extends BaseService<ConnectivityServiceBaseState> {
+    extends BaseService<ConnectivityServiceState> {
   IConnectivityService()
-      : super(ConnectivityServiceState(type: ConnectivityType.unknown));
+      : super(const ConnectivityServiceState.identified(
+            type: ConnectivityType.unknown));
 }
 
 @Singleton(as: IConnectivityService)
@@ -25,9 +26,11 @@ class ConnectivityService extends IConnectivityService {
 
   void _handleConnectivityChanged(ConnectivityResult result) {
     if (result == ConnectivityResult.none) {
-      emit(ConnectivityServiceState(type: ConnectivityType.disconnected));
+      emit(const ConnectivityServiceState.identified(
+          type: ConnectivityType.disconnected));
     } else {
-      emit(ConnectivityServiceState(type: ConnectivityType.connected));
+      emit(const ConnectivityServiceState.identified(
+          type: ConnectivityType.connected));
     }
   }
 }
