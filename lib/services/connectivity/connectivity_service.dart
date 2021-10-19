@@ -25,12 +25,14 @@ class ConnectivityService extends IConnectivityService {
   }
 
   void _handleConnectivityChanged(ConnectivityResult result) {
+    ConnectivityType type;
+
     if (result == ConnectivityResult.none) {
-      emit(const ConnectivityServiceState.identified(
-          type: ConnectivityType.disconnected));
+      type = ConnectivityType.disconnected;
     } else {
-      emit(const ConnectivityServiceState.identified(
-          type: ConnectivityType.connected));
+      type = ConnectivityType.connected;
     }
+
+    emit(ConnectivityServiceState.identified(type: type));
   }
 }

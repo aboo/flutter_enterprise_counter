@@ -19,19 +19,23 @@ class CounterService extends ICounterService {
 
   @override
   Future<void> increment() async {
-    await Future.delayed(_delay);
-    emit(_getNewState(1));
+    emit(await _getNewState(1));
   }
 
   @override
   Future<void> decrement() async {
-    await Future.delayed(_delay);
-    emit(_getNewState(-1));
+    emit(await _getNewState(-1));
   }
 
-  CounterServiceState _getNewState(int modification) {
+  Future<int> _getNewCount(int modification, int currentCount) async {
+    await Future.delayed(_delay); // simulate network delay
+    return currentCount + modification;
+  }
+
+  Future<CounterServiceState> _getNewState(int modification) async {
     if (state is Data) {
-      return CounterServiceState.data(count: state.count + modification);
+      var newCount = await _getNewCount(modification, state.count);
+      return CounterServiceState.data(count: newCount);
     }
 
     return state;
