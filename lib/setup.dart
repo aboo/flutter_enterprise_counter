@@ -6,7 +6,8 @@ import 'package:injectable/injectable.dart';
 
 final getIt = GetIt.instance;
 
-locateService<T extends Object>() => getIt.get<T>();
+locateService<T extends Object>({dynamic param1}) =>
+    getIt.get<T>(param1: param1);
 
 @InjectableInit(
   initializerName: r'$initGetIt', // default

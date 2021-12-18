@@ -7,6 +7,17 @@ void main() {
   runApp(const MyApp());
 }
 
+// ignore: todo
+// TODO
+// This should be refactored into the screen code
+// once the screen base, navigation and component
+// resolvation is implemented
+var controller = CounterDisplayController(
+  onChanged: () {
+    print('update');
+  },
+);
+
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
@@ -20,7 +31,7 @@ class MyApp extends StatelessWidget {
       home: MyHomePage(
         title: 'Enterprise Counter',
         counterController: locateService<CounterController>(),
-        counterDisplay: locateService<CounterDisplay>(),
+        counterDisplay: locateService<CounterDisplay>(param1: controller),
       ),
     );
   }
@@ -55,6 +66,11 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             widget.counterDisplay,
             widget.counterController,
+            ElevatedButton(
+                onPressed: () {
+                  controller.reset();
+                },
+                child: const Text('Reset'))
           ],
         ),
       ),

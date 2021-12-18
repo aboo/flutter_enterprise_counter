@@ -19,4 +19,8 @@ class CounterDisplayViewModel extends BaseViewModel<CounterDisplayState> {
   void _handleCounterChange(CounterServiceState counterState) {
     emit(CounterDisplayState.loaded(counter: counterState.count));
   }
+
+  void reset() {
+    emit(const CounterDisplayState.loaded(counter: 0));
+  }
 }
