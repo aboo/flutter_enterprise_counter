@@ -22,7 +22,12 @@ class _CounterControllerState
         bloc: viewModel,
         builder: (context, state) {
           if (state is Busy) {
-            return const Text('busy ...');
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Text('busy ...'),
+              ],
+            );
           } else if (state is Unavaialble) {
             return Text(state.reason);
           }
@@ -33,6 +38,7 @@ class _CounterControllerState
 
   Widget _buildControllers() {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         ElevatedButton(
           onPressed: () => viewModel.positive(),

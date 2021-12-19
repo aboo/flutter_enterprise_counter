@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 
+import 'app_router.dart';
+
 final getIt = GetIt.instance;
 
 locateService<T extends Object>({dynamic param1}) =>
@@ -16,11 +18,16 @@ locateService<T extends Object>({dynamic param1}) =>
 )
 @module
 abstract class RegisterModule {
+  static final _appRouter = AppRouter();
+
   @Injectable(as: Key)
   UniqueKey get key;
 
   @singleton
   Connectivity get connectivity;
+
+  @singleton
+  AppRouter get appRouter => _appRouter;
 }
 
 void configureDependencies() => $initGetIt(getIt);
